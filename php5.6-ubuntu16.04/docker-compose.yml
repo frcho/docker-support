@@ -1,0 +1,58 @@
+version: '3.5'
+
+services:
+    db:
+        image: mysql:5.7
+        container_name: ${PROJECT_NAME}-db
+        command: --sql_mode="NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+        volumes:
+            - ".docker/.data/db:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - internal
+        labels:
+            - traefik.enable=false
+    php:
+        build:
+            context: .docker/php5.6-apache-supervisor
+            args:
+                TIMEZONE: ${TIMEZONE}
+                DOMAIN_CRONS: ${DOMAIN_CRONS}
+        container_name: ${PROJECT_NAME}-php
+        depends_on:
+           - db         
+        volumes:
+            - ./:/var/www/html
+            - ./app/storage/logs:/var/www/html/app/storage/logs
+            - ./var/apache2/:/var/log/apache2
+        networks:
+            - internal
+            - app          
+        labels:
+            - 'traefik.backend=${PROJECT_NAME}-apache'
+            - 'traefik.enable=true'
+            - 'traefik.frontend.rule=Host:unlock.localhost'
+            - 'traefik.docker.network=app'   
+            - 'traefik.wss.protocol=http'
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: ${PROJECT_NAME}-phpmyadmin
+        networks:
+            - internal
+            - app
+        labels:
+            - 'traefik.backend=${PROJECT_NAME}-phpmyadmin'
+            - 'traefik.enable=true'
+            - 'traefik.frontend.rule=Host:unlockdb.localhost'
+            - 'traefik.docker.network=app'
+networks:
+    app:
+        external:
+            name: app             
+    internal:
+        name: ${PROJECT_NAME}
