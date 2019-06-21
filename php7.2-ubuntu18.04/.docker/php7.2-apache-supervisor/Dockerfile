@@ -3,18 +3,15 @@ RUN apk --no-cache add curl \
   	&& curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
 	&& tar -xvzf ioncube.tar.gz
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 ARG TIMEZONE
 
 LABEL MAINTAINER frcho <luisfer1g@gmail.com>
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PHP_VERSION=5.6
+ARG PHP_VERSION=7.2
 
 RUN \
-    apt-get update && \
-    apt-get install -y software-properties-common && \
-    LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
     apt-get update && \
     apt-get install -y --no-install-recommends --no-install-suggests apt-utils \
     ca-certificates gettext \
@@ -28,7 +25,6 @@ RUN \
     php${PHP_VERSION}-imap \
     php${PHP_VERSION}-intl \
     php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-mcrypt \
     php${PHP_VERSION}-mysql \
     php${PHP_VERSION}-xml \
     php${PHP_VERSION}-xsl \
@@ -81,16 +77,14 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 
 COPY --from=ioncube_loader /ioncube/ioncube_loader_lin_${PHP_VERSION}.so /usr/local/ioncube/
 
-RUN echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/php${PHP_VERSION}/apache2/conf.d/00-ioncube.ini \
-    && echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/php${PHP_VERSION}/cli/conf.d/00-ioncube.ini
+RUN echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/${PHP_VERSION}/apache2/conf.d/00-ioncube.ini \
+    && echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/${PHP_VERSION}/cli/conf.d/00-ioncube.ini
 
 
 # Configure Apache
 RUN rm -rf /var/www/* \
     && a2enmod rewrite \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-RUN phpenmod mcrypt
 
 ADD vhost.conf /etc/apache2/sites-available/000-default.conf
 

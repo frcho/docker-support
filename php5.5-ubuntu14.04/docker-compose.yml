@@ -21,13 +21,11 @@ services:
             context: .docker/php5.5-apache-supervisor
             args:
                 TIMEZONE: ${TIMEZONE}
-                DOMAIN_CRONS: ${DOMAIN_CRONS}
         container_name: ${PROJECT_NAME}-php
         depends_on:
            - db         
         volumes:
             - ./:/var/www/html
-            - ./app/storage/logs:/var/www/html/app/storage/logs
             - ./var/apache2/:/var/log/apache2
         networks:
             - internal

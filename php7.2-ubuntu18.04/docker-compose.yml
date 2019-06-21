@@ -18,7 +18,7 @@ services:
             - traefik.enable=false
     php:
         build:
-            context: .docker/php5.6-apache-supervisor
+            context: .docker/php7.2-apache-supervisor
             args:
                 TIMEZONE: ${TIMEZONE}
         container_name: ${PROJECT_NAME}-php

@@ -34,6 +34,7 @@ RUN \
     zip \
     unzip \
     vim \
+    htop \
     cron && \
     rm -rf /var/lib/apt/lists/*
 

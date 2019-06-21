@@ -1,13 +1,1 @@
-*/1 * * * * root php /var/www/html/artisan agmail:send user >> /tmp/info
-*/1 * * * * root php /var/www/html/artisan agmail:send admin >> /tmp/info
-* * 2 * *  http://${DOMAIN_CRONS}/cron/remove-expired-invoice >> /tmp/info
-*/1 * * * *  http://${DOMAIN_CRONS}/cron/resubmit-order?service=imei >> /tmp/info
-*/2 * * * *  http://${DOMAIN_CRONS}/cron/delay-response-order >> /tmp/info
-* * 2 * *  http://${DOMAIN_CRONS}/cron/remove-old-log  >> /tmp/info
-*/1 * * * *  http://${DOMAIN_CRONS}/cron/activate-order  >> /tmp/info
-*/1 * * * *  http://${DOMAIN_CRONS}/cron/Resubmit-credit-process  >> /tmp/info
-*/1 * * * *  http://${DOMAIN_CRONS}/cron/resubmit-order-process  >> /tmp/info
-30 * * * *  http://${DOMAIN_CRONS}/cron/update-user-address  >> /tmp/info
-*/1 * * * *  http://${DOMAIN_CRONS}/cron/fetch-pending-paypal-transaction  >> /tmp/info
-* 5 * * *  http://${DOMAIN_CRONS}/cron/user-credit-notify-cron  >> /tmp/info
-* 5 * * *  http://${DOMAIN_CRONS}/cron/user-credit-notify-cron/send-credit-notify  >> /tmp/info
+*/1 * * * * root echo "hello world"
