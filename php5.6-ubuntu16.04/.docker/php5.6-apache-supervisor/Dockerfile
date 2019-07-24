@@ -81,8 +81,8 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 
 COPY --from=ioncube_loader /ioncube/ioncube_loader_lin_${PHP_VERSION}.so /usr/local/ioncube/
 
-RUN echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/php${PHP_VERSION}/apache2/conf.d/00-ioncube.ini \
-    && echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/php${PHP_VERSION}/cli/conf.d/00-ioncube.ini
+RUN echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/${PHP_VERSION}/apache2/conf.d/00-ioncube.ini \
+    && echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/${PHP_VERSION}/cli/conf.d/00-ioncube.ini
 
 
 # Configure Apache
