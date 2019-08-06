@@ -1,4 +1,4 @@
-version: '3.5'
+version: '2.4'
 
 services:
     db:
@@ -18,9 +18,11 @@ services:
             - traefik.enable=false
     php:
         build:
-            context: .docker/php5.6-apache-supervisor
+            context: .docker/php7.x-apache-supervisor
             args:
                 TIMEZONE: ${TIMEZONE}
+                PHP_VERSION: ${PHP_VERSION}
+                DECODE: ${DECODE}
         container_name: ${PROJECT_NAME}-php
         depends_on:
            - db         

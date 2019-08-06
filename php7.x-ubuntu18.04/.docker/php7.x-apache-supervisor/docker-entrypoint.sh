@@ -11,11 +11,11 @@ if [ "${1#-}" != "$1" ]; then
     set -- supervisord "$@"
 fi
 
-if [ "$1" = 'supervisord' ] || [ "$1" = 'artisian' ]; then
+if [ "$1" = 'supervisord' ]; then
        echo "Any code that you need to execute in container starting procces" 
        echo "*************************"
        echo "******  Your code  ******"
-       echo "*************************"      
+       echo "*************************"
 fi
 
 exec "$@"

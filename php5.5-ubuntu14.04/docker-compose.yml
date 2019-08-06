@@ -39,6 +39,11 @@ services:
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: ${PROJECT_NAME}-phpmyadmin
+    #   The configuration file of phpmyadmin/phpmyadmin (/www/config.inc.php) say by default the host name of database server if 'db' :
+    #   $hosts = array('db');
+    #   So if your database name container is not 'db', you should add the environment variable PMA_HOST= (or PMA_HOSTS if multi db servers) with the right name (databaseContainer in your case)
+        environment:
+            PMA_HOST: ${PROJECT_NAME}-db        
         networks:
             - internal
             - app
