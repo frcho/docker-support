@@ -31,9 +31,8 @@ services:
             - internal
             - app          
         labels:
-            - 'traefik.backend=${PROJECT_NAME}-apache'
             - 'traefik.enable=true'
-            - 'traefik.frontend.rule=Host:${DOMAIN_NAME}'
+            - "traefik.http.routers.${PROJECT_NAME}-php.rule=Host(`${DOMAIN_NAME}`)"
             - 'traefik.docker.network=app'   
 
     phpmyadmin:
@@ -48,9 +47,8 @@ services:
             - internal
             - app
         labels:
-            - 'traefik.backend=${PROJECT_NAME}-phpmyadmin'
             - 'traefik.enable=true'
-            - 'traefik.frontend.rule=Host:${PHPADMIN_DOMAIN_NAME}'
+            - "traefik.http.routers.${PROJECT_NAME}-phpmyadmin.rule=Host(`${PHPMYADMIN_DOMAIN_NAME}`)"
             - 'traefik.docker.network=app'
 networks:
     app:
